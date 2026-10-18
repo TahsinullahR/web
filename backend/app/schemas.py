@@ -52,3 +52,72 @@ class HealthOut(BaseModel):
     default_model: str
     db: str
     version: str
+
+
+# ---------- Agent ----------
+
+class TaskCreate(BaseModel):
+    instruction: str = Field(min_length=3, max_length=4000)
+
+    @field_validator("instruction")
+    @classmethod
+    def _not_blank(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("instruction must not be blank")
+        return v
+
+
+# ---------- Projects ----------
+
+class ProjectCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=64)
+    kind: Literal["static", "react"] = "static"
+    prompt: str = Field(default="", max_length=4000)
+
+
+class ProjectFileIn(BaseModel):
+    path: str = Field(min_length=1, max_length=256)
+    content: str = Field(default="", max_length=512_000)
+
+
+class ProjectGenerateIn(BaseModel):
+    instruction: str = Field(min_length=3, max_length=4000)
+    model: str | None = Field(default=None, max_length=200)
+
+
+class ProjectPatchIn(BaseModel):
+    name: str | None = Field(default=None, max_length=64)
+
+
+class ProjectRestoreIn(BaseModel):
+    path: str = Field(min_length=1, max_length=256)
+    version: int = Field(ge=1)
+
+
+# ---------- Creative studio ----------
+
+class MediaGenerateIn(BaseModel):
+    kind: Literal["image", "video", "audio", "tts", "stt"]
+    prompt: str = Field(min_length=1, max_length=1000)
+
+    @field_validator("prompt")
+    @classmethod
+    def _not_blank(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("prompt must not be blank")
+        return v
+
+
+# ---------- Devices & settings ----------
+
+class DeviceIn(BaseModel):
+    id: str = Field(default="", max_length=64)
+    name: str = Field(min_length=1, max_length=64)
+    platform: Literal["windows", "android", "web"] = "windows"
+    paired: bool = False
+
+
+class SettingsIn(BaseModel):
+    language: Literal["en", "bn", "banglish"] | None = None
+    default_model: str | None = Field(default=None, max_length=200)
+    theme: Literal["dark", "light"] | None = None

@@ -1,13 +1,11 @@
 __pycache__/
-*.py[cod]
-*$py.class
+*.pyc
+.pytest_cache/
+.mypy_cache/
 .env
 .env.local
 .env.*.local
-*.db
-*.sqlite3
 node_modules/
 dist/
 build/
-.vite/
-*.tsbuildinfo
+*.log

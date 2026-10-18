@@ -100,3 +100,13 @@ async def delete_latest_assistant(conn: aiosqlite.Connection, cid: str) -> None:
         (cid,),
     )
     await conn.commit()
+
+
+# ---- Re-export platform data layer so callers can `from .. import repo` uniformly ----
+from .repo_platform import (  # noqa: E402,F401
+    add_log, add_media_job, create_project, create_task, current_files,
+    delete_device, delete_project, file_versions, get_file_version, get_logs,
+    get_project, get_setting, get_step, get_steps, get_task, list_devices,
+    list_media_jobs, list_projects, list_tasks, rename_project, save_project_file,
+    set_setting, set_step_status, set_task_status, update_project_status, upsert_device,
+)
