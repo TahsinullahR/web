@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.env.local
+.env.*.local
+*.db
+*.sqlite3
+node_modules/
+dist/
+build/
+.vite/
+*.tsbuildinfo
